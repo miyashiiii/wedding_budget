@@ -22,5 +22,13 @@ class MainModel extends ChangeNotifier{
 
     });
   }
+  String todoText = "";
+  Future add() async{
+    final collection = FirebaseFirestore.instance.collection('todoList');
+    await collection.add({
+      "title": todoText,
+      "createdAt":Timestamp.now()
+    });
 
+  }
   }
