@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firestore_practice/todo.dart';
+import 'package:firestore_practice/model/todo.dart';
 import 'package:flutter/material.dart';
 
 class MainModel extends ChangeNotifier {

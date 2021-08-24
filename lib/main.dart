@@ -1,6 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firestore_practice/add.dart';
-import 'package:firestore_practice/main_model.dart';
+import 'package:firestore_practice/viewmodel/main_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

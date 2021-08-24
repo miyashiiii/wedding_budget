@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'main_model.dart';
+import 'viewmodel/main_model.dart';
 
 class AddPage extends StatelessWidget {
   final MainModel model;
