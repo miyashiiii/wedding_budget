@@ -5,11 +5,13 @@ import 'main_model.dart';
 
 class AddPage extends StatelessWidget {
   final MainModel model;
+
   AddPage(this.model);
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<MainModel>.value(
-      value:model,
+      value: model,
       child: Scaffold(
         appBar: AppBar(
           title: Text("新規追加"),
@@ -18,16 +20,16 @@ class AddPage extends StatelessWidget {
           return Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(children: [
-              TextField(decoration: InputDecoration(
-                labelText:"追加するTODO",
-                hintText: "ゴミ捨て"
+              TextField(
+                decoration:
+                    InputDecoration(labelText: "追加するTODO", hintText: "ゴミ捨て"),
+                onChanged: (text) {
+                  model.todoText = text;
+                },
               ),
-              onChanged: (text){
-                model.todoText = text;
-              },),
-              SizedBox(height:16),
+              SizedBox(height: 16),
               ElevatedButton(
-                onPressed: () async{
+                onPressed: () async {
                   await model.add();
                   Navigator.pop(context);
                 },
