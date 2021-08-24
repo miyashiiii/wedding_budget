@@ -1,4 +1,4 @@
-package com.miyashiiii.firestorepractice
+package com.miyashiiii.WeddingBudgets
 
 import io.flutter.embedding.android.FlutterActivity
 
