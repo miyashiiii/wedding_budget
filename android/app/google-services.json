@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "630385066912",
+    "project_id": "firestorepractice-cf692",
+    "storage_bucket": "firestorepractice-cf692.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:630385066912:android:afd8864b6769de63f55ac5",
+        "android_client_info": {
+          "package_name": "com.miyashiiii.firestorepractice"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "630385066912-77np3099j2q2rdt0pjgmi5h6gnhrrn5c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAUWnAn-CBbDCUT2xg7RA_Ds-aVHnlzu1E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "630385066912-77np3099j2q2rdt0pjgmi5h6gnhrrn5c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
