@@ -32,4 +32,25 @@ class MainModel extends ChangeNotifier {
     final collection = FirebaseFirestore.instance.collection('todoList');
     await collection.add({"title": todoText, "createdAt": Timestamp.now()});
   }
+
+  reload() {
+    notifyListeners();
+  }
+
+  Future deleteDoneItems() async {
+    final checkedItems = todoList.where((todo) => todo.isDone).toList();
+    final references =
+        checkedItems.map((todo) => todo.documentReference).toList();
+
+    WriteBatch batch = FirebaseFirestore.instance.batch();
+    references.forEach((reference) {
+      batch.delete(reference);
+    });
+    return batch.commit();
+  }
+
+  bool checkShouldActiveCompleteButton() {
+    final checkedItems = todoList.where((todo) => todo.isDone).toList();
+    return checkedItems.length > 0;
+  }
 }
