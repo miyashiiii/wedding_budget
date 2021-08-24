@@ -33,7 +33,29 @@ class MainPage extends StatelessWidget {
                   return TextButton(
                       onPressed: isActive
                           ? () {
-                              model.deleteDoneItems();
+                              showDialog(
+                                  context: context,
+                                  builder: (_) {
+                                    return AlertDialog(
+                                      // title: Text("タイトル"),
+                                      content: Text(
+                                          "チェックされた項目を削除しますか？"),
+                                      actions: <Widget>[
+                                        // ボタン領域
+                                        TextButton(
+                                          child: Text("Cancel"),
+                                          onPressed: () =>
+                                              Navigator.pop(context),
+                                        ),
+                                        TextButton(
+                                            child: Text("OK"),
+                                            onPressed: () => {
+                                                  model.deleteDoneItems(),
+                                                  Navigator.pop(context),
+                                                }),
+                                      ],
+                                    );
+                                  });
                             }
                           : null,
                       child: Text("完了",
