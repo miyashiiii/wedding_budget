@@ -1,8 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:provider/provider.dart';
 import 'package:wedding_budgets/firebase_util.dart';
 import 'package:wedding_budgets/viewmodel/main_model.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,7 +25,20 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(title: 'TODOアプリ', home: MainPage());
+    const locale = Locale("ja", "JP");
+
+    return MaterialApp(
+      locale: locale,
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        locale,
+      ],
+      home: MainPage(),
+    );
   }
 }
 
@@ -33,7 +47,7 @@ class MainPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("TODOアプリ"),
+          title: Text("結婚式予算管理"),
           actions: [
             Consumer<MainModel>(builder: (context, model, child) {
               final isActive = model.checkShouldActiveCompleteButton();
