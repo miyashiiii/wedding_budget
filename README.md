@@ -1,4 +1,4 @@
-# firestore_practice
+# wedding_budgets
 
 A new Flutter project.
 

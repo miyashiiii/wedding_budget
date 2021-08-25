@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firestore_practice/model/budget.dart';
-import 'package:firestore_practice/model/item.dart';
-import 'package:firestore_practice/model/major_category.dart';
-import 'package:firestore_practice/model/minor_category.dart';
-import 'package:firestore_practice/model/user.dart';
-import 'package:firestore_practice/model/variable.dart';
+import 'package:wedding_budgets/model/budget.dart';
+import 'package:wedding_budgets/model/item.dart';
+import 'package:wedding_budgets/model/major_category.dart';
+import 'package:wedding_budgets/model/minor_category.dart';
+import 'package:wedding_budgets/model/user.dart';
+import 'package:wedding_budgets/model/variable.dart';
 import 'package:flutter/material.dart';
 
 import '../model/family.dart';

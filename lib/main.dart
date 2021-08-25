@@ -1,6 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firestore_practice/firebase_util.dart';
-import 'package:firestore_practice/viewmodel/main_model.dart';
+import 'package:wedding_budgets/firebase_util.dart';
+import 'package:wedding_budgets/viewmodel/main_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
