@@ -28,6 +28,11 @@ class MyApp extends StatelessWidget {
     const locale = Locale("ja", "JP");
 
     return MaterialApp(
+      theme: ThemeData(
+        brightness: Brightness.light,
+        primaryColor: Colors.pink[100],
+        accentColor: Colors.pink[300],
+      ),
       locale: locale,
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
