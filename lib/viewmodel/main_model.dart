@@ -1,17 +1,28 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:firestore_practice/model/todo.dart';
 import 'package:flutter/material.dart';
 
 class MainModel extends ChangeNotifier {
   List<Todo> todoList = [];
+  auth.User? user;
 
-  Future getTodoList() async {
-    final snapshot =
-        await FirebaseFirestore.instance.collection('todoList').get();
-    final docs = snapshot.docs;
-    final todoList = docs.map((doc) => Todo(doc)).toList();
-    this.todoList = todoList;
-    notifyListeners();
+  Future init() async {
+    getUser();
+    getTodoListRealtime();
+  }
+
+  void getUser() {
+    auth.FirebaseAuth.instance.userChanges().listen((auth.User? user) {
+      if (user == null) {
+        print('User is currently signed out!');
+        this.user = null;
+      } else {
+        print('User is signed in!');
+        this.user = user;
+      }
+      notifyListeners();
+    });
   }
 
   void getTodoListRealtime() {
