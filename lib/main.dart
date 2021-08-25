@@ -129,7 +129,8 @@ class MainPage extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          const Text("結婚式予算管理アプリ"),
+          const Text("結婚式予算管理",
+              ),
           ElevatedButton(
             child: const Text('Googleでログイン/新規登録'),
             style: ElevatedButton.styleFrom(
