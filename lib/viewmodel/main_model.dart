@@ -10,6 +10,10 @@ class MainModel extends ChangeNotifier {
   List<Item> itemList = [];
   auth.User? user;
 
+  DocumentReference? majorCategory = null;
+
+  String newMinorCategory = "";
+
   Future init() async {
     getUser();
     getTodoListRealtime();
@@ -70,6 +74,16 @@ class MainModel extends ChangeNotifier {
         FirebaseFirestore.instance.collection('minor_categories');
     await minorCategory
         .add({"major": major, "name": todoText, "createdAt": Timestamp.now()});
+  }
+
+  Future addMinorCategory() async {
+    final minorCategory =
+        FirebaseFirestore.instance.collection('minor_categories');
+    await minorCategory.add({
+      "major": majorCategory,
+      "name": newMinorCategory,
+      "createdAt": Timestamp.now()
+    });
   }
 
   reload() {

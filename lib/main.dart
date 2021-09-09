@@ -7,6 +7,7 @@ import 'package:wedding_budgets/firebase_util.dart';
 import 'package:wedding_budgets/viewmodel/main_model.dart';
 
 import 'add.dart';
+import 'addMinorCategory.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -135,9 +136,30 @@ class MainPage extends StatelessWidget {
                         color: Colors.pink[300],
                         padding: EdgeInsets.symmetric(horizontal: 16.0),
                         alignment: Alignment.centerLeft,
-                        child: Text(
-                          majorCategoryList[majIndex].name,
-                          style: const TextStyle(color: Colors.white),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              majorCategoryList[majIndex].name,
+                              style: const TextStyle(color: Colors.white),
+                            ),
+                            IconButton(
+                                onPressed: () async {
+                                  await Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            AddMinorCategoryPage(model,
+                                                majorCategoryList[majIndex]),
+                                        fullscreenDialog: true),
+                                  );
+                                  // FirebaseUtil.signOut();
+                                },
+                                icon: Icon(
+                                  Icons.add,
+                                  color: Colors.white,
+                                ))
+                          ],
                         ),
                       ),
                       content: ListView.builder(
