@@ -32,11 +32,9 @@ class MyApp extends StatelessWidget {
 
     return MaterialApp(
       theme: ThemeData(
-        brightness: Brightness.light,
-        primaryColor: Colors.pink[100],
-        accentColor: Colors.pink[300]
-
-      ),
+          brightness: Brightness.light,
+          primaryColor: Colors.pink[100],
+          accentColor: Colors.pink[300]),
       locale: locale,
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
@@ -56,7 +54,7 @@ class MainPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("結婚式予算管理",style:TextStyle(color: Colors.white)),
+          title: Text("結婚式予算管理", style: TextStyle(color: Colors.white)),
           actions: [
             Consumer<MainModel>(builder: (context, model, child) {
               final isActive = model.checkShouldActiveCompleteButton();
@@ -110,34 +108,32 @@ class MainPage extends StatelessWidget {
             //         .toList());
             var items = todoList
                 .map((todo) => CheckboxListTile(
-              title: Text(todo.title),
-              onChanged: (bool? value) {
-                todo.isDone = !todo.isDone;
-                model.reload();
-              },
-              value: todo.isDone,
-            ))
+                      title: Text(todo.title),
+                      onChanged: (bool? value) {
+                        todo.isDone = !todo.isDone;
+                        model.reload();
+                      },
+                      value: todo.isDone,
+                    ))
                 .toList();
             var categories = todoList
                 .map((todo) => Container(
-              height: 50.0,
-              color: Colors.blueGrey[700],
-              padding: EdgeInsets.symmetric(horizontal: 16.0),
-              alignment: Alignment.centerLeft,
-              child:
-              Text(
-               todo.category,
-                style: const TextStyle(color: Colors.white),
-              ),
-            )).toList();
+                      height: 50.0,
+                      color: Colors.blueGrey[700],
+                      padding: EdgeInsets.symmetric(horizontal: 16.0),
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        todo.category,
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                    ))
+                .toList();
             return ListView.builder(
                 itemCount: items.length,
                 itemBuilder: (context, index) {
                   return StickyHeader(
                     header: categories[index],
-                    content: Container(
-                      child: items[index]
-                    ),
+                    content: Container(child: items[index]),
                   );
                 });
           } else {
@@ -170,8 +166,9 @@ class MainPage extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          const Text("結婚式予算管理",
-              ),
+          const Text(
+            "結婚式予算管理",
+          ),
           ElevatedButton(
             child: const Text('Googleでログイン/新規登録'),
             style: ElevatedButton.styleFrom(
