@@ -106,6 +106,26 @@ class MainPage extends StatelessWidget {
             //               value: todo.isDone,
             //             ))
             //         .toList());
+            var categories = todoList
+                .map((todo) => Container(
+                      height: 50.0,
+                      color: Colors.blueGrey[700],
+                      padding: EdgeInsets.symmetric(horizontal: 16.0),
+                      alignment: Alignment.centerLeft,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            todo.category,
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                          IconButton(
+                              onPressed: null, icon:Icon(Icons.add,color:Colors.white)
+                          )
+                        ],
+                      ),
+                    ))
+                .toList();
             var items = todoList
                 .map((todo) => CheckboxListTile(
                       title: Text(todo.title),
@@ -114,18 +134,6 @@ class MainPage extends StatelessWidget {
                         model.reload();
                       },
                       value: todo.isDone,
-                    ))
-                .toList();
-            var categories = todoList
-                .map((todo) => Container(
-                      height: 50.0,
-                      color: Colors.blueGrey[700],
-                      padding: EdgeInsets.symmetric(horizontal: 16.0),
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        todo.category,
-                        style: const TextStyle(color: Colors.white),
-                      ),
                     ))
                 .toList();
             return ListView.builder(
