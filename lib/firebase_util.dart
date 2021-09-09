@@ -20,7 +20,12 @@ class FirebaseUtil {
     );
 
     // Once signed in, return the UserCredential
-    return await auth.FirebaseAuth.instance.signInWithCredential(credential);
+    try{
+      return await auth.FirebaseAuth.instance.signInWithCredential(credential);
+    }on auth.FirebaseAuthException catch(e){
+      print(e);
+    }
+
   }
 
   static void signOut() async {
