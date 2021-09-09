@@ -5,6 +5,7 @@ class Todo {
     this.documentReference = doc.reference;
     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
 
+    this.category = data["category"];
     this.title = data["title"];
     Timestamp createdAt = data["createdAt"];
     this.createdAt = createdAt.toDate();
@@ -15,6 +16,7 @@ class Todo {
     this.isDone = isDone;
   }
 
+  late String category;
   late String title;
   late DateTime createdAt;
   late bool isDone;

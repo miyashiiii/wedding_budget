@@ -22,6 +22,14 @@ class AddPage extends StatelessWidget {
             child: Column(children: [
               TextField(
                 decoration:
+                InputDecoration(labelText: "カテゴリー", hintText: "家事"),
+                onChanged: (text) {
+                  model.todoCategory = text;
+                },
+              ),
+              SizedBox(height: 16),
+              TextField(
+                decoration:
                     InputDecoration(labelText: "追加するTODO", hintText: "ゴミ捨て"),
                 onChanged: (text) {
                   model.todoText = text;

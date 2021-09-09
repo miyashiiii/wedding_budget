@@ -2,8 +2,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
+import 'package:sticky_headers/sticky_headers.dart';
 import 'package:wedding_budgets/firebase_util.dart';
 import 'package:wedding_budgets/viewmodel/main_model.dart';
+
+import 'add.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -94,17 +97,49 @@ class MainPage extends StatelessWidget {
         body: Consumer<MainModel>(builder: (context, model, child) {
           if (model.user != null) {
             final todoList = model.todoList;
-            return ListView(
-                children: todoList
-                    .map((todo) => CheckboxListTile(
-                          title: Text(todo.title),
-                          onChanged: (bool? value) {
-                            todo.isDone = !todo.isDone;
-                            model.reload();
-                          },
-                          value: todo.isDone,
-                        ))
-                    .toList());
+            // return ListView(
+            //     children: todoList
+            //         .map((todo) => CheckboxListTile(
+            //               title: Text(todo.title),
+            //               onChanged: (bool? value) {
+            //                 todo.isDone = !todo.isDone;
+            //                 model.reload();
+            //               },
+            //               value: todo.isDone,
+            //             ))
+            //         .toList());
+            var items = todoList
+                .map((todo) => CheckboxListTile(
+              title: Text(todo.title),
+              onChanged: (bool? value) {
+                todo.isDone = !todo.isDone;
+                model.reload();
+              },
+              value: todo.isDone,
+            ))
+                .toList();
+            var categories = todoList
+                .map((todo) => Container(
+              height: 50.0,
+              color: Colors.blueGrey[700],
+              padding: EdgeInsets.symmetric(horizontal: 16.0),
+              alignment: Alignment.centerLeft,
+              child:
+              Text(
+               todo.category,
+                style: const TextStyle(color: Colors.white),
+              ),
+            )).toList();
+            return ListView.builder(
+                itemCount: items.length,
+                itemBuilder: (context, index) {
+                  return StickyHeader(
+                    header: categories[index],
+                    content: Container(
+                      child: items[index]
+                    ),
+                  );
+                });
           } else {
             return notSignInWidget();
           }
@@ -116,13 +151,13 @@ class MainPage extends StatelessWidget {
             child: FloatingActionButton(
               tooltip: 'Increment',
               onPressed: () async {
-                // await Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //       builder: (context) => AddPage(model),
-                //       fullscreenDialog: true),
-                // );
-                FirebaseUtil.signOut();
+                await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => AddPage(model),
+                      fullscreenDialog: true),
+                );
+                // FirebaseUtil.signOut();
               },
               child: Icon(Icons.add),
             ),

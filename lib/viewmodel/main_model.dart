@@ -37,11 +37,12 @@ class MainModel extends ChangeNotifier {
     });
   }
 
+  String todoCategory = "";
   String todoText = "";
 
   Future add() async {
     final collection = FirebaseFirestore.instance.collection('todoList');
-    await collection.add({"title": todoText, "createdAt": Timestamp.now()});
+    await collection.add({"category": todoCategory, "title": todoText, "createdAt": Timestamp.now()});
   }
 
   reload() {
