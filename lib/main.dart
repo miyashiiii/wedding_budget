@@ -31,7 +31,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         brightness: Brightness.light,
         primaryColor: Colors.pink[100],
-        accentColor: Colors.pink[300],
+        accentColor: Colors.pink[300]
+
       ),
       locale: locale,
       localizationsDelegates: const [
@@ -52,7 +53,7 @@ class MainPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("結婚式予算管理"),
+          title: Text("結婚式予算管理",style:TextStyle(color: Colors.white)),
           actions: [
             Consumer<MainModel>(builder: (context, model, child) {
               final isActive = model.checkShouldActiveCompleteButton();
