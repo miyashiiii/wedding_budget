@@ -5,7 +5,7 @@ class MinorCategory {
     this.documentReference = doc.reference;
     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
 
-    this.majorCategoryReference = data["majorCategory"];
+    this.majorCategoryReference = data["major"];
     this.name = data["name"];
     Timestamp createdAt = data["createdAt"];
     this.createdAt = createdAt.toDate();

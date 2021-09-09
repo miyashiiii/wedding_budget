@@ -92,9 +92,9 @@ class MainPage extends StatelessWidget {
             })
           ],
         ),
-        body: Consumer<MainModel>(builder: (context, model, child) {
+        body: Consumer<MainModel>(builder: (context, MainModel model, child) {
           if (model.user != null) {
-            final todoList = model.todoList;
+            final majorCategoryList = model.majorCategoryList;
             // return ListView(
             //     children: todoList
             //         .map((todo) => CheckboxListTile(
@@ -106,43 +106,59 @@ class MainPage extends StatelessWidget {
             //               value: todo.isDone,
             //             ))
             //         .toList());
-            var categories = todoList
-                .map((todo) => Container(
-                      height: 50.0,
-                      color: Colors.blueGrey[700],
-                      padding: EdgeInsets.symmetric(horizontal: 16.0),
-                      alignment: Alignment.centerLeft,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            todo.category,
-                            style: const TextStyle(color: Colors.white),
-                          ),
-                          IconButton(
-                              onPressed: null, icon:Icon(Icons.add,color:Colors.white)
-                          )
-                        ],
-                      ),
-                    ))
-                .toList();
-            var items = todoList
-                .map((todo) => CheckboxListTile(
-                      title: Text(todo.title),
-                      onChanged: (bool? value) {
-                        todo.isDone = !todo.isDone;
-                        model.reload();
-                      },
-                      value: todo.isDone,
-                    ))
-                .toList();
+            // var categories = majorCategoryList
+            //     .map((majorCategory) => Container(
+            //           height: 50.0,
+            //           color: Colors.blueGrey[700],
+            //           padding: EdgeInsets.symmetric(horizontal: 16.0),
+            //           alignment: Alignment.centerLeft,
+            //           child: Row(
+            //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //             children: [
+            //               Text(
+            //                 majorCategory.name,
+            //                 style: const TextStyle(color: Colors.white),
+            //               ),
+            //               IconButton(
+            //                   onPressed: null, icon:Icon(Icons.add,color:Colors.white)
+            //               )
+            //             ],
+            //           ),
+            //         ))
+            //     .toList();
             return ListView.builder(
-                itemCount: items.length,
-                itemBuilder: (context, index) {
+                itemCount: majorCategoryList.length,
+                itemBuilder: (context, majIndex) {
                   return StickyHeader(
-                    header: categories[index],
-                    content: Container(child: items[index]),
-                  );
+                      header: Container(
+                        height: 40,
+                        color: Colors.pink[300],
+                        padding: EdgeInsets.symmetric(horizontal: 16.0),
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          majorCategoryList[majIndex].name,
+                          style: const TextStyle(color: Colors.white),
+                        ),
+                      ),
+                      content: ListView.builder(
+                          itemCount: majorCategoryList[majIndex]
+                              .minorCategories
+                              .length,
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemBuilder: (context, minIndex) {
+                            return ListTile(
+                              title: Text(
+                                majorCategoryList[majIndex]
+                                    .minorCategories[minIndex]
+                                    .name,
+                                style: const TextStyle(color: Colors.black),
+                              ),
+                              onTap: () {
+                                print("tap #$minIndex");
+                              },
+                            );
+                          }));
                 });
           } else {
             return notSignInWidget();
