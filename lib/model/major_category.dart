@@ -19,5 +19,5 @@ class MajorCategory {
   late DateTime createdAt;
 
   List<MinorCategory> minorCategories = [];
-
+  bool isEdit = false;
 }

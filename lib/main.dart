@@ -51,8 +51,13 @@ class MyApp extends StatelessWidget {
 }
 
 class MainPage extends StatelessWidget {
+  final List<TextEditingController> _controllers = [];
+  late final MainModel mainModel;
+
   @override
   Widget build(BuildContext context) {
+    mainModel = Provider.of<MainModel>(context, listen: false);
+
     return Scaffold(
         appBar: AppBar(
           title: Text("結婚式予算管理", style: TextStyle(color: Colors.white)),
@@ -93,94 +98,117 @@ class MainPage extends StatelessWidget {
             })
           ],
         ),
-        body: Consumer<MainModel>(builder: (context, MainModel model, child) {
-          if (model.user != null) {
-            final majorCategoryList = model.majorCategoryList;
-            return ListView.builder(
-                itemCount: majorCategoryList.length,
-                itemBuilder: (context, majIndex) {
-                  GlobalKey globalKey = GlobalKey();
+        body: GestureDetector(
+          onTap: () {
+            FocusScope.of(context).unfocus();
+            mainModel.disableMajorCategoryEdit();
+          },
+          child:
+              Consumer<MainModel>(builder: (context, MainModel model, child) {
+            _controllers.clear();
 
-                  return StickyHeader(
-                      header: Container(
-                        height: 40,
-                        color: Colors.pink[300],
-                        padding: EdgeInsets.symmetric(horizontal: 16.0),
-                        alignment: Alignment.centerLeft,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            GestureDetector(
-                              onLongPress: () {
-                                print('onLongPress');
-                                final RenderBox renderBox =
-                                    globalKey.currentContext?.findRenderObject()
-                                        as RenderBox;
-                                var textPos =
-                                    renderBox.localToGlobal(Offset.zero);
-                                print(
-                                    "ウィジェットの位置 :${renderBox.localToGlobal(Offset.zero)}");
-                                showMenu(
-                                    context: context,
-                                    position: RelativeRect.fromLTRB(
-                                        textPos.dx,
-                                        textPos.dy + 30,
-                                        textPos.dx + 50,
-                                        textPos.dy + 50),
-                                    items: [
-                                      PopupMenuItem(
-                                          value: 0, child: Text("名前の変更"))
-                                    ]);
-                              },
-                              child: Text(
-                                majorCategoryList[majIndex].name,
-                                style: const TextStyle(color: Colors.white),
-                                key: globalKey,
-                              ),
-                            ),
-                            IconButton(
-                                onPressed: () async {
-                                  await Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            AddMinorCategoryPage(model,
-                                                majorCategoryList[majIndex]),
-                                        fullscreenDialog: true),
-                                  );
-                                  // FirebaseUtil.signOut();
+            if (model.user != null) {
+              final majorCategoryList = model.majorCategoryList;
+              return ListView.builder(
+                  itemCount: majorCategoryList.length,
+                  itemBuilder: (context, majIndex) {
+                    _controllers.add(new TextEditingController());
+                    print("controllers: ${_controllers.length}");
+                    // print("isEdit: ${model.isMajorCategoryEditList}");
+                    return StickyHeader(
+                        header: Container(
+                          height: 40,
+                          color: Colors.pink[300],
+                          padding: EdgeInsets.symmetric(horizontal: 16.0),
+                          alignment: Alignment.centerLeft,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              GestureDetector(
+                                onLongPress: () {
+                                  print('onLongPress');
+                                  model.enableMajorCategoryEdit(majIndex);
                                 },
-                                icon: Icon(
-                                  Icons.add,
-                                  color: Colors.white,
-                                ))
-                          ],
-                        ),
-                      ),
-                      content: ListView.builder(
-                          itemCount: majorCategoryList[majIndex]
-                              .minorCategories
-                              .length,
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          itemBuilder: (context, minIndex) {
-                            return ListTile(
-                              title: Text(
-                                majorCategoryList[majIndex]
-                                    .minorCategories[minIndex]
-                                    .name,
-                                style: const TextStyle(color: Colors.black),
+                                child: model.majorCategoryList[majIndex].isEdit
+                                    ? Focus(
+                                        onFocusChange: (hasFocus) {
+                                          print("hasFocus: ${hasFocus}");
+                                          if (!hasFocus) {
+                                            model.disableMajorCategoryEdit();
+                                          }
+                                        },
+                                        child: Container(
+                                          width: 200,
+                                          child: TextField(
+                                              controller: _controllers[majIndex]
+                                                ..text =
+                                                    majorCategoryList[majIndex]
+                                                        .name,
+                                              onEditingComplete: () => {
+                                                    model
+                                                        .disableMajorCategoryEdit()
+                                                  },
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                              onChanged: (text) {
+                                                model.updateMajorName = text;
+                                                model.updateMajorDoc = model
+                                                    .majorCategoryList[majIndex]
+                                                    .documentReference;
+                                              }),
+                                        ),
+                                      )
+                                    : Text(
+                                        majorCategoryList[majIndex].name,
+                                        style: const TextStyle(
+                                            color: Colors.white),
+                                      ),
                               ),
-                              onTap: () {
-                                print("tap #$minIndex");
-                              },
-                            );
-                          }));
-                });
-          } else {
-            return notSignInWidget();
-          }
-        }),
+                              IconButton(
+                                  onPressed: () async {
+                                    await Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              AddMinorCategoryPage(model,
+                                                  majorCategoryList[majIndex]),
+                                          fullscreenDialog: true),
+                                    );
+                                    // FirebaseUtil.signOut();
+                                  },
+                                  icon: Icon(
+                                    Icons.add,
+                                    color: Colors.white,
+                                  ))
+                            ],
+                          ),
+                        ),
+                        content: ListView.builder(
+                            itemCount: majorCategoryList[majIndex]
+                                .minorCategories
+                                .length,
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemBuilder: (context, minIndex) {
+                              return ListTile(
+                                title: Text(
+                                  majorCategoryList[majIndex]
+                                      .minorCategories[minIndex]
+                                      .name,
+                                  style: const TextStyle(color: Colors.black),
+                                ),
+                                onTap: () {
+                                  print("tap #$minIndex");
+                                  mainModel.disableMajorCategoryEdit();
+                                },
+                              );
+                            }));
+                  });
+            } else {
+              return notSignInWidget();
+            }
+          }),
+        ),
         floatingActionButton:
             Consumer<MainModel>(builder: (context, model, child) {
           return Visibility(

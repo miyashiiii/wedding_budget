@@ -14,6 +14,8 @@ class MainModel extends ChangeNotifier {
 
   String newMinorCategory = "";
 
+  List<bool> isMajorCategoryEditList = [];
+
   Future init() async {
     getUser();
     getTodoListRealtime();
@@ -32,6 +34,24 @@ class MainModel extends ChangeNotifier {
     });
   }
 
+  void checkUpdateMajorCategory(List<MajorCategory> majorCategoryList) {
+    for (var m in majorCategoryList) {
+      bool isExist = false;
+      int idx = 0;
+      for (var currentM in this.majorCategoryList) {
+        if (m.documentReference.path == currentM.documentReference.path) {
+          isExist = true;
+          this.majorCategoryList[idx].name = m.name;
+          break;
+        }
+        idx++;
+      }
+      if (!isExist) {
+        this.majorCategoryList.add(m);
+      }
+    }
+  }
+
   void getTodoListRealtime() {
     final majorCategoriesSnapshots =
         FirebaseFirestore.instance.collection('major_categories').snapshots();
@@ -39,7 +59,7 @@ class MainModel extends ChangeNotifier {
       final docs = snapshot.docs;
       final majorCategoryList = docs.map((doc) => MajorCategory(doc)).toList();
       majorCategoryList.sort((a, b) => a.createdAt.compareTo(b.createdAt));
-      this.majorCategoryList = majorCategoryList;
+      checkUpdateMajorCategory(majorCategoryList);
       print("majors - ${majorCategoryList.length}");
       notifyListeners();
     });
@@ -86,6 +106,13 @@ class MainModel extends ChangeNotifier {
     });
   }
 
+  String updateMajorName = "";
+  DocumentReference? updateMajorDoc = null;
+
+  Future updateMajorCategoryName() async {
+    await updateMajorDoc?.update({"name": updateMajorName});
+  }
+
   reload() {
     notifyListeners();
   }
@@ -107,5 +134,18 @@ class MainModel extends ChangeNotifier {
     // final checkedItems = todoList.where((todo) => todo.isDone).toList();
     // return checkedItems.length > 0;
     return true;
+  }
+
+  void enableMajorCategoryEdit(int idx) {
+    majorCategoryList[idx].isEdit = true;
+    notifyListeners();
+  }
+
+  void disableMajorCategoryEdit() {
+    for (var m in majorCategoryList) {
+      m.isEdit = false;
+    }
+    updateMajorCategoryName();
+    notifyListeners();
   }
 }
