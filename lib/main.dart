@@ -96,40 +96,11 @@ class MainPage extends StatelessWidget {
         body: Consumer<MainModel>(builder: (context, MainModel model, child) {
           if (model.user != null) {
             final majorCategoryList = model.majorCategoryList;
-            // return ListView(
-            //     children: todoList
-            //         .map((todo) => CheckboxListTile(
-            //               title: Text(todo.title),
-            //               onChanged: (bool? value) {
-            //                 todo.isDone = !todo.isDone;
-            //                 model.reload();
-            //               },
-            //               value: todo.isDone,
-            //             ))
-            //         .toList());
-            // var categories = majorCategoryList
-            //     .map((majorCategory) => Container(
-            //           height: 50.0,
-            //           color: Colors.blueGrey[700],
-            //           padding: EdgeInsets.symmetric(horizontal: 16.0),
-            //           alignment: Alignment.centerLeft,
-            //           child: Row(
-            //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //             children: [
-            //               Text(
-            //                 majorCategory.name,
-            //                 style: const TextStyle(color: Colors.white),
-            //               ),
-            //               IconButton(
-            //                   onPressed: null, icon:Icon(Icons.add,color:Colors.white)
-            //               )
-            //             ],
-            //           ),
-            //         ))
-            //     .toList();
             return ListView.builder(
                 itemCount: majorCategoryList.length,
                 itemBuilder: (context, majIndex) {
+                  GlobalKey globalKey = GlobalKey();
+
                   return StickyHeader(
                       header: Container(
                         height: 40,
@@ -139,9 +110,33 @@ class MainPage extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              majorCategoryList[majIndex].name,
-                              style: const TextStyle(color: Colors.white),
+                            GestureDetector(
+                              onLongPress: () {
+                                print('onLongPress');
+                                final RenderBox renderBox =
+                                    globalKey.currentContext?.findRenderObject()
+                                        as RenderBox;
+                                var textPos =
+                                    renderBox.localToGlobal(Offset.zero);
+                                print(
+                                    "ウィジェットの位置 :${renderBox.localToGlobal(Offset.zero)}");
+                                showMenu(
+                                    context: context,
+                                    position: RelativeRect.fromLTRB(
+                                        textPos.dx,
+                                        textPos.dy + 30,
+                                        textPos.dx + 50,
+                                        textPos.dy + 50),
+                                    items: [
+                                      PopupMenuItem(
+                                          value: 0, child: Text("名前の変更"))
+                                    ]);
+                              },
+                              child: Text(
+                                majorCategoryList[majIndex].name,
+                                style: const TextStyle(color: Colors.white),
+                                key: globalKey,
+                              ),
                             ),
                             IconButton(
                                 onPressed: () async {
